@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0 (2026-09-26)
+
+参考 [xiaoyuyu6420/dsh-backup](https://github.com/xiaoyuyu6420/dsh-backup) 的设计吸收了五项能力（实现按本插件的组件化 ZIP 架构重写）：
+
+- **救援通道**：新增零依赖 `rescue.mjs`（list / verify / restore，默认只补缺失文件、`--force` 覆盖并留 `.bak-rescue-*`）+ 三平台「点我恢复」双击启动器；磁盘备份目录自动附带，设置面板可下载救援工具包
+- **自动备份**：`/backup auto 12` 每 12 小时（1–720）写盘一次，重启自动续跑；每份带 `.sha256` sidecar，按保留份数（默认 7）自动轮换；状态存备份目录随目录走
+- **`/backup` 斜杠命令**：`backup / list / verify / restore [--dry-run] [--mode] / auto / doctor / --keep N / help`（命令名冲突时自动退回 `/dsh-backup`）
+- **凭据脱敏**：导出默认把 settings.yaml 中疑似密钥值（自动识别 camelCase）替换为占位符并在包内写 `redaction.json`；覆盖导入时占位符处自动回填本机现值，本机缺失的保留占位并提示重填
+- **会话体检 doctor**：只读扫描全部会话（zstd 魔数 / 空文件 / JSONL 首字节），面板与 `/backup doctor` 均可触发
+
+仓库：新增 CI（node 22/24 × ubuntu/windows 矩阵）、Issue 模板、`engines.dsh` 兼容声明、英文 README。
+
 ## 0.1.0 (2026-09-26)
 
 首个版本。

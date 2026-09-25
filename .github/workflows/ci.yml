@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: node ${{ matrix.node }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: [22, 24]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Syntax check
+        run: node --check lib/index.js && node --check lib/store.js && node --check lib/zip.js && node --check lib/client.js && node --check lib/backupdir.js && node --check rescue/rescue.mjs
+      - name: Unit & e2e tests (core)
+        run: node --test test/local-test.mjs
+      - name: Unit & e2e tests (v0.2 features)
+        run: node --test test/v02-test.mjs
