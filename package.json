@@ -1,0 +1,68 @@
+{
+  "name": "dsh-backup",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness 备份与恢复插件：在 Web UI 设置里新增「备份与恢复」页，把全部工作区、完整对话（会话文件字节级复制）、附件、设置与 dsh-mnemon 记忆数据导出为一个 ZIP 备份包，并可预检后合并 / 覆盖导入。会话内容全程不解包不改写，任何 dsh 会话格式代际（v0–v3+）都可携带，harness 升级后可正常导入，dsh-mnemon 上下文注入恢复后与原本一致。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "backup",
+    "restore",
+    "workspace",
+    "mnemon"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/dsh-client-runtime": "*"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/dsh-client-runtime": {
+      "optional": true
+    }
+  },
+  "license": "MIT",
+  "author": "having5548",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/having5548/dsh-backup.git"
+  },
+  "bugs": {
+    "url": "https://github.com/having5548/dsh-backup/issues"
+  },
+  "homepage": "https://github.com/having5548/dsh-backup#readme",
+  "dependencies": {
+    "schemastery": "^3.18.0"
+  }
+}
