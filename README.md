@@ -58,7 +58,7 @@ dsh plugin --profile web add having5548-dsh-backup-<版本>.tgz
 ### 方式二：对话里敲 `/backup`
 
 ```
-/backup                    # 立即备份（默认写到 ~/Desktop/dsh-backups/，输出 sha256）
+/backup                    # 立即备份（默认写到 ~/Documents/dsh-backups/，输出 sha256 与位置）
 /backup auto 12            # 每 12 小时自动备份，重启不中断
 /backup restore latest --dry-run   # 先预览恢复会做什么
 /backup restore latest     # 正式恢复（默认合并模式）
