@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.1 (2026-09-26)
+
+**关键修复**：修复服务启动即崩（`cannot get property "webServer" without inject`）。
+
+- 根因：cordis-plugin-loader 会优先取 `exports.default` 作为插件对象；此前把 `apply`
+  单独导出成了 default，loader 拿到裸函数、丢失 `inject` 声明，插件启动即崩并被
+  桌面端自动屏蔽卸载。现改为纯命名导出（`export { apply, inject, name }`），
+  与 dsh-notify / 官方插件契约一致。
+- `/backup` 斜杠命令改为经 `ctx.inject(['commands'], …)` 延迟接线：不再直接访问
+  未声明的 `ctx.commands`（未注入服务的 getter 会抛错），且命令服务缺席时其余
+  功能不受影响。
+
 ## 0.2.0 (2026-09-26)
 
 参考 [xiaoyuyu6420/dsh-backup](https://github.com/xiaoyuyu6420/dsh-backup) 的设计吸收了五项能力（实现按本插件的组件化 ZIP 架构重写）：
