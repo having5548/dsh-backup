@@ -1,6 +1,6 @@
 {
   "name": "@having5548/dsh-backup",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "DeepSeek Harness 备份与恢复插件：在 Web UI 设置里新增「备份与恢复」页，把全部工作区、完整对话（会话文件字节级复制）、附件、设置与 dsh-mnemon 记忆数据导出为一个 ZIP 备份包，并可预检后合并 / 覆盖导入。会话内容全程不解包不改写，任何 dsh 会话格式代际（v0–v3+）都可携带，harness 升级后可正常导入，dsh-mnemon 上下文注入恢复后与原本一致。",
   "keywords": [
     "dsh",
