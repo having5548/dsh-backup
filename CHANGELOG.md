@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 (2026-09-26)
+
+**兼容性修复:适配 dsh 0.1.6 / 0.1.7(修复客户端 "pending (waiting for service: settingsScope)" 加载失败)。**
+
+- **根因**:dsh 宿主升级到 0.1.7 后,客户端已不再提供 `settingsScope` 服务,依赖它的插件会永久挂起。本插件的客户端 inject 收敛为 `['slots', 'locale']`(与官方 0.1.7 兼容插件一致),`remote` / `sessions` 改为使用时惰性解析——缺席只影响对应功能,不再阻塞整个插件。
+- **设置持久化改为插件自管**(`~/.dsh/dsh-backup-settings.json`,原子写):不再依赖宿主 settings 服务的版本契约;新增 `GET/POST /dsh-backup/settings`。服务端 inject 同步收敛为 `['webServer']`。
+- 此前版本在 0.1.7 宿主上的表现:客户端加载失败横幅 + 设置页不渲染。0.1.5 列车不受影响。
+
+
 ## 0.3.1 (2026-09-26)
 
 - **自动备份目录默认位置改为「文档」文件夹**（`~/Documents/dsh-backups`，Documents 不存在时回落主目录），不再放桌面
