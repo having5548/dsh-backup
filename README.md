@@ -195,9 +195,13 @@ payload/
 
 ## 🧪 开发与测试
 
+> **AI / 接手维护者请先读 [AGENTS.md](AGENTS.md)**——含架构地图、历史踩坑的硬性禁忌、发布清单与「变更记录规则」(任何改动必须记入 [CHANGELOG.md](CHANGELOG.md))。
+
 ```bash
 npm install            # 安装 schemastery
-node --test test/local-test.mjs
+node --test test/local-test.mjs   # 核心套件
+node --test test/v02-test.mjs     # v0.2 特性套件
+node --test test/route-harness.mjs  # HTTP 路由台架
 ```
 
 测试覆盖：ZIP 读写回环（文本 / 二进制 / 空文件 / 嵌套 / 大文件 / 第三方 zip）、zip 路径安全（穿越 / 绝对路径 / 驱动器号）、组件分类与落点、workspace / memories / documents 三类合并语义、两套假 dsh home 之间的端到端导出导入（合并 / 覆盖 / 校验失败拒绝 / 惰性暂存）。
