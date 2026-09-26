@@ -53,8 +53,14 @@ test('HTTP 路由:全部端点正常响应,预检→执行全链路可用', asyn
   assert.ok(route, 'prefix 路由应注册')
 
   const server = http.createServer(async (req, res) => {
+    // 复刻 dsh-host-webserver 的 prefix 匹配语义(源码 327 行):
+    //   pathname === prefix || pathname.startsWith(prefix + '/')
+    // 前缀不能带尾斜杠 —— 曾因 ROUTE_PREFIX 带尾斜杠导致全部接口 404 空响应。
+    const pn = new URL(req.url, 'http://x').pathname
+    const matched = routes.find((r) => r.kind === 'prefix' && (pn === r.path || pn.startsWith(r.path + '/')))
     try {
-      await route.handler(req, res)
+      if (!matched) { res.writeHead(404); res.end(); return }
+      await matched.handler(req, res)
     } catch (err) {
       if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'application/json' })
       try { res.end(JSON.stringify({ ok: false, error: String(err && err.message) })) } catch { /* ignore */ }

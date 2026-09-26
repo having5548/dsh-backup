@@ -1,8 +1,10 @@
 # Changelog
 
-## 0.2.2 (2026-09-26)
+## 0.2.3 (2026-09-26)
 
-**关键修复**：修复「预检」请求挂死（浏览器报 Unexpected end of JSON input / 空响应）与导出下载损坏。
+**关键修复**：修复设置页全部接口 404 空响应（浏览器报 **Unexpected end of JSON input**）、「预检」请求挂死与导出下载损坏。
+
+- **路由前缀不能带尾斜杠（本次空响应的真正根因）**：dsh-host-webserver 的 prefix 匹配语义是 `pathname === prefix || pathname.startsWith(prefix + '/')`，此前 ROUTE_PREFIX 为 `/dsh-backup/`，匹配条件退化为 `startsWith('/dsh-backup//')` 永不命中，所有接口落到 404 空响应。现改为 `/dsh-backup`。
 
 - `spoolRequest` 从不调用 `ws.end()`，上传预检的 handler 永不响应——dsh 网关超时掐断后浏览器拿到空响应体。现于请求体读完后正确收尾，并对客户端中途断开做清理。
 - 导出下载曾在流式输出过程中调用 `res.setHeader`（ERR_HTTP_HEADERS_SENT）导致连接被销毁、下载损坏，已移除该调用。
