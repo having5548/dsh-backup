@@ -30,10 +30,13 @@
 ## Install
 
 ```bash
-npm pack                                   # build dsh-backup-<version>.tgz
-dsh plugin --profile web add dsh-backup-<version>.tgz
+# from npm (recommended)
+dsh plugin --profile web add @having5548/dsh-backup
 # or from a GitHub release:
-dsh plugin --profile web add https://github.com/having5548/dsh-backup/releases/download/v0.2.0/dsh-backup-0.2.0.tgz
+dsh plugin --profile web add https://github.com/having5548/dsh-backup/releases/latest/download/having5548-dsh-backup.tgz
+# or local build:
+npm pack                                   # build having5548-dsh-backup-<version>.tgz
+dsh plugin --profile web add having5548-dsh-backup-<version>.tgz
 ```
 
 Restart `dsh web`, then open **Settings → Backup & Restore** or type `/backup`.

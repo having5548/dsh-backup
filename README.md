@@ -26,18 +26,23 @@
 
 ## 📦 安装
 
-```bash
-# 打包
-npm pack          # 得到 dsh-backup-0.1.0.tgz
+从 npm 安装（推荐）：
 
-# 安装到 DSH web profile
-dsh plugin --profile web add dsh-backup-0.1.0.tgz
+```bash
+dsh plugin --profile web add @having5548/dsh-backup
 ```
 
-也可以从 GitHub Release 直接装：
+或从 GitHub Release 安装：
 
 ```bash
-dsh plugin --profile web add https://github.com/having5548/dsh-backup/releases/download/v0.1.0/dsh-backup-0.1.0.tgz
+dsh plugin --profile web add https://github.com/having5548/dsh-backup/releases/latest/download/having5548-dsh-backup.tgz
+```
+
+本地开发 / 打包：
+
+```bash
+npm pack          # 得到 having5548-dsh-backup-<版本>.tgz
+dsh plugin --profile web add having5548-dsh-backup-<版本>.tgz
 ```
 
 安装后**重启服务**（桌面端工具栏「重新连接服务」），打开 **设置 → 备份与恢复**。

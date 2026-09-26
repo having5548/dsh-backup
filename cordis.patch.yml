@@ -2,4 +2,4 @@
 # 向 Cordis 树插入本插件；Loader 会解析包入口 lib/index.js 并调用 apply(ctx)。
 - insert:
     - id: dsh-backup
-      name: dsh-backup
+      name: '@having5548/dsh-backup'
