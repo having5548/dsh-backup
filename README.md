@@ -4,7 +4,7 @@
 
 **DeepSeek Harness 备份与恢复插件** — 工作区、完整对话、附件、设置、mnemon 记忆，一个 ZIP 全带走，换机 / 重装 / 升级后原样恢复。
 
-![Version](https://img.shields.io/badge/version-0.2.0-4c7ef3?style=flat-square)
+![Version](https://img.shields.io/badge/version-0.3.0-4c7ef3?style=flat-square)
 ![Format](https://img.shields.io/badge/format-DshBackup%20v1-2b6cb0?style=flat-square)
 ![CI](https://github.com/having5548/dsh-backup/actions/workflows/ci.yml/badge.svg?style=flat-square)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-0078d6?style=flat-square)
@@ -22,7 +22,7 @@
 | 🗂 **工作区级备份**<br>类似 VS Code 的 Profile 导出：一个 ZIP 携带工作区注册表 + 全部会话 + 附件 + 设置 + 插件清单 | 🔒 **对话字节级保真**<br>会话文件全程不解包、不改写，恢复后 AI 可完整识别全部历史 | 🔁 **版本双向兼容**<br>旧代际会话由 harness 自带迁移链自动升级；未来新版 harness 的会话也能装进当前备份 |
 | 🧠 **mnemon 注入一致**<br>`~/.mnemon` 三目录按字节备份，覆盖导入 = 全量还原，上下文注入与备份时完全一致 | 🔍 **先预检再动手**<br>导入前看清楚将新增 / 覆盖 / 保留多少数据、缺哪些插件；导入后给出逐组件报告 | 🛟 **救援通道**<br>每份磁盘备份都带零依赖的 `rescue.mjs` 与「点我恢复」双击启动器——DSH 起不来也能还原 |
 | 🔀 **合并 / 覆盖双模式**<br>合并只补缺不覆盖（日常）；覆盖整批替换（灾难恢复），语义透明、行为可预期 | ⏰ **自动备份 + 轮换**<br>定时写盘到本机备份目录，每份带 `.sha256` 校验文件，按保留份数自动轮换，重启不中断 | 🩺 **会话体检**<br>一键扫描全部会话文件（zstd 魔数 / 文件头 / 空文件），异常早发现 |
-| 🤖 **/backup 斜杠命令**<br>在对话里直接 `/backup`、`/backup restore latest --dry-run`、`/backup auto 12` | 🔐 **凭据脱敏**<br>导出时 settings.yaml 中的密钥值替换为占位符，明文不出备份包；恢复时自动保留本机现值 | 🪶 **零重依赖**<br>ZIP 流式读写与全部合并逻辑为内置纯 JS 实现，仅依赖 `schemastery` |
+| 🤖 **/backup 斜杠命令**<br>在对话里直接 `/backup`、`/backup restore latest --dry-run`、`/backup auto 12` | 🔐 **凭据脱敏**<br>导出时 settings.yaml 中的密钥值替换为占位符，明文不出备份包；恢复时自动保留本机现值 | 🩺 **AI 恢复助理（可选）**<br>跨版本导入后一键/自动开新会话让 DeepSeek 核查恢复结果并做最小修复；**默认关闭**，自主控制 token 消耗 |
 
 ## 📦 安装
 

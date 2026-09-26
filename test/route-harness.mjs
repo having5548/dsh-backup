@@ -87,7 +87,11 @@ test('HTTP 路由:全部端点正常响应,预检→执行全链路可用', asyn
       assert.equal(body.ok, true, p)
     }
 
-    // ---- 非法 verify 名 → 400 JSON ----
+    // ---- /status 携带宿主版本(跨版本检测的依据) ----
+    const st = await probeJson('GET /status (dshVersion)', '/dsh-backup/status')
+    assert.ok('dshVersion' in st.body, 'status 应含 dshVersion 字段')
+
+    // ---- 空 body 预检:必须快速返回 JSON 错误,不得挂死 ----
     const bad = await probeJson('GET /disk/verify?name=bad', '/dsh-backup/disk/verify?name=bad-name')
     assert.equal(bad.status, 400)
     assert.equal(bad.body.ok, false)
@@ -122,6 +126,20 @@ test('HTTP 路由:全部端点正常响应,预检→执行全链路可用', asyn
     assert.equal(ex.status, 200)
     assert.equal(ex.body.ok, true)
     assert.equal(ex.body.report.components.workspaces.action, 'replaced')
+
+    // ---- AI 恢复助理任务书:生成 prompt 并标注跨版本 ----
+    const brief = await probeJson('POST /assistant-brief', '/dsh-backup/assistant-brief', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ report: ex.body.report, manifest: pv.body.manifest }),
+    })
+    assert.equal(brief.status, 200)
+    assert.equal(brief.body.ok, true)
+    assert.ok(brief.body.prompt.includes('恢复助理'), '任务书应包含助理指令')
+    assert.ok(brief.body.prompt.includes('绝不删除任何数据'), '任务书应包含安全护栏')
+    assert.equal(brief.body.crossVersion, false, '测试进程无法反推宿主版本 → 非跨版本')
+    const briefBad = await probeJson('POST /assistant-brief (缺 report)', '/dsh-backup/assistant-brief', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+    assert.equal(briefBad.status, 400)
 
     const sessB = path.join(tmp, 'home-b', 'sessions', '--H-demo--', '11111111-1111-4111-8111-111111111111', 'session.v3.jsonl.zstd')
     assert.ok(fs.existsSync(sessB), '会话应还原')
