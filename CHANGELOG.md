@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.2 (2026-09-26)
+
+**关键修复**：修复「预检」请求挂死（浏览器报 Unexpected end of JSON input / 空响应）与导出下载损坏。
+
+- `spoolRequest` 从不调用 `ws.end()`，上传预检的 handler 永不响应——dsh 网关超时掐断后浏览器拿到空响应体。现于请求体读完后正确收尾，并对客户端中途断开做清理。
+- 导出下载曾在流式输出过程中调用 `res.setHeader`（ERR_HTTP_HEADERS_SENT）导致连接被销毁、下载损坏，已移除该调用。
+- 修复脱敏备份的 checksums 大小错误：包内 settings.yaml 现记录脱敏后内容的大小（此前记录磁盘原始大小，导致带校验的导入被误拒）。
+- 新增 HTTP 路由回归测试（mock dsh webserver 全链路：预检→执行→导出→救援包，全部带超时防挂死）。
+
+
 ## 0.2.1 (2026-09-26)
 
 **关键修复**：修复服务启动即崩（`cannot get property "webServer" without inject`）。
