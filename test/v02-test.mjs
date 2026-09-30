@@ -364,6 +364,27 @@ test('rescue.mjs：verify / restore（只补缺失） / restore --force 覆盖',
   }
 })
 
+test('resolveProfileName：DSH_PROFILE → --profile → 回落 web', async () => {
+  const { resolveProfileName } = await import('../lib/store.js')
+  const prevEnv = process.env.DSH_PROFILE
+  const prevArgv = process.argv
+  try {
+    delete process.env.DSH_PROFILE
+    process.argv = ['node', 'test.mjs']
+    assert.equal(resolveProfileName(), 'web')
+    process.argv = ['node', 'test.mjs', '--profile', 'desktop']
+    assert.equal(resolveProfileName(), 'desktop')
+    process.argv = ['node', 'test.mjs', '--profile=web']
+    assert.equal(resolveProfileName(), 'web')
+    process.argv = ['node', 'test.mjs']
+    process.env.DSH_PROFILE = 'desktop'
+    assert.equal(resolveProfileName(), 'desktop', '环境变量优先于默认值')
+  } finally {
+    if (prevEnv === undefined) delete process.env.DSH_PROFILE; else process.env.DSH_PROFILE = prevEnv
+    process.argv = prevArgv
+  }
+})
+
 test('backupFileName：格式与轮换正则匹配', () => {
   const name = backupFileName(new Date(2026, 8, 26, 9, 7, 5))
   assert.equal(name, 'dsh-backup-20260926-090705.zip')

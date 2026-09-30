@@ -38,8 +38,12 @@
    **流式响应开始后禁止 `res.setHeader`**(ERR_HTTP_HEADERS_SENT → 连接被销毁)。
 5. **会话文件永远字节级复制**,不解包、不改写——这是"对话完整、跨版本兼容"的根基。
 6. **`rescue/rescue.mjs` 保持零第三方依赖**(只用 node 内置模块),它是 DSH 起不来时的最后通道。
-7. 宿主 services 契约随版本漂移(0.1.5 → 0.1.7 变化很大):升级宿主后先跑
+7. 宿主 services 契约随版本漂移(0.1.5 → 0.1.7 → 新版 Electron 桌面端变化很大):升级宿主后先跑
    `test/route-harness.mjs` 与真实环境冒烟,别凭旧记忆写代码。
+8. **profile 名不要硬编码**:新版桌面端用 `desktop` profile,旧 CLI 为 `web`;必须经
+   `resolveProfileName()`(`DSH_PROFILE` 环境变量 → `--profile` 参数 → 回落 `web`)。
+   新一代安装包是 Electron 版(`DeepSeek Harness.exe`),dsh 核心在
+   `resources/app.asar(.unpacked)` 里;只读探查契约可以,不要动用户本地安装。
 
 ## 版本与发布清单(每次发版逐条打勾)
 
